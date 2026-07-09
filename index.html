@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GO EVENT GARWOLIN</title>
+<meta name="description" content="GO EVENT GARWOLIN — organizator imprez w Garwolinie. Sprawdź najbliższe wydarzenie i kup bilet online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/x-icon" href="goev.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-violet:#180a29;
+    --deep-plum:#3a1259;
+    --magenta:#d62976;
+    --ember:#f77737;
+    --cream:#fdf3e7;
+    --lilac:#b79fcb;
+    --line: rgba(253,243,231,0.14);
+    --radius: 18px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink-violet);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  .display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    line-height:1.02;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* subtle noise/vignette on hero */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 90px 24px 70px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(214,41,118,0.55), transparent 45%),
+      radial-gradient(circle at 82% 78%, rgba(247,119,55,0.5), transparent 50%),
+      radial-gradient(circle at 50% 100%, rgba(58,18,89,0.9), transparent 60%),
+      var(--ink-violet);
+  }
+
+  nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    background:linear-gradient(180deg, rgba(24,10,41,0.92), rgba(24,10,41,0));
+    backdrop-filter:blur(6px);
+  }
+  .nav-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Anton', sans-serif;
+    text-transform:uppercase;
+    font-size:15px;
+    letter-spacing:0.5px;
+  }
+  .nav-brand img{width:34px;height:34px;border-radius:50%;}
+  .nav-links{
+    display:flex;
+    gap:22px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:0.4px;
+    text-transform:uppercase;
+  }
+  .nav-links a{
+    text-decoration:none;
+    opacity:0.82;
+    transition:opacity .2s;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:linear-gradient(100deg, var(--magenta), var(--ember));
+    padding:9px 18px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  @media (max-width:720px){
+    .nav-links{display:none;}
+  }
+
+  .logo-ring{
+    width:118px;height:118px;border-radius:50%;
+    padding:5px;
+    background:conic-gradient(from 220deg, var(--magenta), var(--ember), var(--magenta));
+    margin-bottom:26px;
+    box-shadow: 0 0 60px rgba(214,41,118,0.35);
+  }
+  .logo-ring img{
+    width:100%;height:100%;border-radius:50%;
+    background:var(--ink-violet);
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--lilac);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:"● "; color:var(--ember);}
+
+  h1.display{
+    font-size:clamp(40px, 8vw, 92px);
+    max-width:920px;
+    background:linear-gradient(96deg, var(--cream) 30%, var(--lilac) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin:0 0 18px;
+  }
+  .hero-sub{
+    max-width:560px;
+    color:var(--lilac);
+    font-size:17px;
+    line-height:1.55;
+    margin:0 0 46px;
+  }
+
+  /* Countdown — departure-board style */
+  .board-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    margin-bottom:44px;
+  }
+  .board-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--lilac);
+  }
+  .board{
+    display:flex;
+    gap:10px;
+    padding:18px 22px;
+    border-radius:var(--radius);
+    background:linear-gradient(180deg, rgba(253,243,231,0.06), rgba(253,243,231,0.02));
+    border:1px solid var(--line);
+  }
+  .flip{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-width:64px;
+  }
+  .flip-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:clamp(28px, 5vw, 44px);
+    line-height:1;
+    padding:10px 6px;
+    border-radius:10px;
+    background:var(--deep-plum);
+    border:1px solid var(--line);
+    min-width:56px;
+    text-align:center;
+    font-variant-numeric: tabular-nums;
+  }
+  .flip-cap{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--lilac);
+    margin-top:8px;
+  }
+  .flip-sep{
+    align-self:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:26px;
+    color:var(--lilac);
+    opacity:0.5;
+    padding-bottom:22px;
+  }
+
+  .cta-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(100deg, var(--magenta), var(--ember));
+    color:var(--cream);
+    text-decoration:none;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    font-size:15px;
+    padding:18px 34px;
+    border-radius:999px;
+    box-shadow:0 14px 40px rgba(214,41,118,0.35);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .cta-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 46px rgba(247,119,55,0.45);
+  }
+  .cta-note{
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--lilac);
+    opacity:0.8;
+  }
+
+  /* sections */
+  section{
+    padding:90px 24px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:40px;
+  }
+  .section-head .eyebrow{margin:0;}
+  .section-head h2{
+    font-size:clamp(26px,4vw,38px);
+    margin:0;
+  }
+
+  /* event card */
+  .event-card{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap:0;
+    border-radius:24px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:linear-gradient(150deg, var(--deep-plum), rgba(24,10,41,0.6));
+  }
+  .event-card-visual{
+    position:relative;
+    padding:44px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(214,41,118,0.55), transparent 55%),
+      radial-gradient(circle at 80% 90%, rgba(247,119,55,0.5), transparent 55%);
+    min-height:260px;
+  }
+  .ticket-stub{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--cream);
+    opacity:0.85;
+  }
+  .event-card-visual .display{
+    font-size:clamp(30px,4vw,42px);
+    margin-top:20px;
+  }
+  .event-card-body{
+    padding:44px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+  .meta-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    font-size:15px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .meta-row:last-of-type{border-bottom:none;}
+  .meta-icon{
+    width:22px;height:22px;flex:none;
+    color:var(--ember);
+  }
+  .meta-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--lilac);
+    display:block;
+    margin-bottom:3px;
+  }
+  .event-card-body .cta-primary{
+    margin-top:6px;
+    justify-content:center;
+    width:100%;
+  }
+  @media (max-width:760px){
+    .event-card{grid-template-columns:1fr;}
+  }
+
+  /* about */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .about-grid p{
+    color:var(--lilac);
+    font-size:16px;
+    line-height:1.75;
+    margin:0 0 16px;
+  }
+  .stat-row{
+    display:flex;
+    gap:36px;
+    margin-top:28px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    display:flex;
+    flex-direction:column;
+  }
+  .stat b{
+    font-family:'Anton', sans-serif;
+    font-size:34px;
+    background:linear-gradient(100deg, var(--magenta), var(--ember));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .stat span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--lilac);
+    margin-top:4px;
+  }
+  .about-visual{
+    aspect-ratio:1/1;
+    border-radius:28px;
+    background:
+      conic-gradient(from 200deg, var(--magenta), var(--ember), var(--deep-plum), var(--magenta));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  .about-visual::after{
+    content:"";
+    position:absolute;
+    inset:16px;
+    border-radius:22px;
+    background:var(--ink-violet);
+  }
+  .about-visual img{
+    position:relative;
+    width:46%;
+    z-index:1;
+    filter:drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+  }
+  @media (max-width:760px){
+    .about-grid{grid-template-columns:1fr;}
+  }
+
+  /* steps */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:26px;
+  }
+  .step{
+    padding:32px 26px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:rgba(253,243,231,0.03);
+  }
+  .step-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ember);
+    letter-spacing:2px;
+    margin-bottom:14px;
+  }
+  .step h3{
+    font-family:'Anton', sans-serif;
+    text-transform:uppercase;
+    font-weight:400;
+    font-size:19px;
+    margin:0 0 10px;
+    letter-spacing:0.3px;
+  }
+  .step p{
+    color:var(--lilac);
+    font-size:14.5px;
+    line-height:1.6;
+    margin:0;
+  }
+  @media (max-width:760px){
+    .steps{grid-template-columns:1fr;}
+  }
+
+  /* closing cta band */
+  .cta-band{
+    text-align:center;
+    padding:90px 24px;
+    background:linear-gradient(180deg, transparent, rgba(214,41,118,0.12));
+    border-top:1px solid var(--line);
+  }
+  .cta-band h2.display{
+    font-size:clamp(30px,5vw,50px);
+    max-width:640px;
+    margin:0 auto 26px;
+  }
+
+  footer{
+    padding:44px 24px 34px;
+    border-top:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    text-align:center;
+  }
+  .footer-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Anton', sans-serif;
+    text-transform:uppercase;
+    font-size:14px;
+  }
+  .footer-brand img{width:28px;height:28px;border-radius:50%;}
+  .footer-links{
+    display:flex;
+    gap:20px;
+    font-size:13px;
+  }
+  .footer-links a{text-decoration:none; color:var(--lilac);}
+  .footer-links a:hover{color:var(--cream);}
+  .footer-fine{
+    font-size:12px;
+    color:var(--lilac);
+    opacity:0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important; animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <img src="goev.jpg" alt="Logo GO EVENT GARWOLIN">
+    GO EVENT GARWOLIN
+  </div>
+  <div class="nav-links">
+    <a href="#event">Najbliższy event</a>
+    <a href="#o-nas">Gwiazda wieczoru</a>
+    <a href="#SKYREX">Dj SKYREX</a>
+    <a href="#jak-kupic">Jak kupić bilet</a>
+    <a href="#kontakt">SOCIAL MEDIA</a>
+  </div>
+  <a class="nav-cta" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet</a>
+</nav>
+
+<header class="hero">
+  <div class="logo-ring">
+    <img src="goev.jpg" alt="Logo GO EVENT GARWOLIN">
+  </div>
+  <div class="eyebrow">GO EVENT</div>
+  <h1 class="display">Imprezy, które<br>zapadają w pamięć</h1>
+  <p class="hero-sub">Sprawdź, ile czasu zostało do najbliższego wydarzenia</p>
+
+  <div class="board-wrap">
+    <div class="board-label">Do najbliższej imprezy zostało</div>
+    <div class="board" id="countdown">
+      <div class="flip"><div class="flip-num" id="cd-days">--</div><div class="flip-cap">dni</div></div>
+      <div class="flip-sep">:</div>
+      <div class="flip"><div class="flip-num" id="cd-hours">--</div><div class="flip-cap">godz.</div></div>
+      <div class="flip-sep">:</div>
+      <div class="flip"><div class="flip-num" id="cd-min">--</div><div class="flip-cap">min</div></div>
+      <div class="flip-sep">:</div>
+      <div class="flip"><div class="flip-num" id="cd-sec">--</div><div class="flip-cap">sek</div></div>
+    </div>
+  </div>
+
+  <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">
+    Kup bilet online →
+  </a>
+</header>
+
+<section id="event">
+  <div class="section-head">
+    <span class="eyebrow">Nadchodzi</span>
+    <h2 class="display">Najbliższa impreza</h2>
+  </div>
+  <div class="event-card">
+    <div class="event-card-visual">
+      <span class="ticket-stub">GO EVENT</span>
+      <div class="display">UNIN<br>COME BACK!<br></div>
+    </div>
+    <div class="event-card-body">
+      <div class="meta-row">
+        <span class="meta-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        </span>
+        <div>
+          <span class="meta-label">Data</span>
+          24 Lipca 2026, godz. 19:00
+        </div>
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </span>
+        <div>
+          <span class="meta-label">Miejsce</span>
+          Unin 57, 08-400 Unin
+        </div>
+
+      </div>
+      <div class="meta-row">
+        <span class="meta-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M3 8v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8M3 8h18M8 14h.01M12 14h.01M16 14h.01"/></svg>
+        </span>
+        <div>
+          <span class="meta-label">Bilety od</span>
+        20 zł · pula ograniczona
+        </div>
+      </div>
+      <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet online →</a>
+    </div>
+  </div>
+
+
+<section id="o-nas">
+  <div class="about-grid">
+    <div>
+      <div class="eyebrow">gość specjalny</div>
+      <h2 class="display" style="font-size:clamp(26px,4vw,38px); margin-bottom:20px;">Niedługo ogłoszenie!</h2>
+      <p></p>
+      <p></p>
+      <div class="stat-row">
+        <div class="stat"><b>900K +</b><span>obserwujących</span></div>
+        <div class="stat"><b>10 MLN +</b><span>największy hit</span></div>
+        
+      </div>
+    </div>
+    
+    <div class="about-visual">
+
+  <img src="SEQUENTO2.png" alt="Sequento" style="width: 200%; max-width: 800px; height: auto;">
+
+    </div>
+    <span><a class="cta-primary" href="https://www.instagram.com/goevent_garwolin/" target="_blank" rel="noopener">INSTAGRAM</a></span>
+ 
+  </div>
+</section>
+
+<section id="SKYREX">
+  <div class="about-grid">
+    <div>
+      <div class="eyebrow">DJ SET</div>
+      <h2 class="display" style="font-size:clamp(26px,4vw,38px); margin-bottom:20px;">DJ SKYREX</h2>
+      <p></p>
+      <p></p>
+      <div class="stat-row">
+        <div class="stat"><b>1300 +</b><span>obserwujących</span></div>
+        
+        
+      </div>
+    </div>
+    
+    <div class="about-visual">
+
+  <img src="SKRX1.png" alt="SKYRX" style="width: 200%; max-width: 800px; height: auto;">
+
+    </div>
+  </div>
+  <span><a class="cta-primary" href="https://www.instagram.com/dj.skyrex/" target="_blank" rel="noopener">INSTAGRAM</a></span>
+</section>
+
+<section id="jak-kupic">
+  <div class="section-head">
+    <span class="eyebrow">Krok po kroku</span>
+    <h2 class="display">Jak kupić bilet</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Kliknij „Kup bilet”</h3>
+      <p>Przycisk przeniesie Cię na zewnętrzny, bezpieczny serwis biletowy superboss.pl</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Wybierz bilet</h3>
+      <p>Wskaż rodzaj wejściówki i liczbę biletów, a następnie dokończ płatność online.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Odbierz e-bilet</h3>
+      <p>Bilet trafi na Twój e-mail. Wystarczy okazać go na wejściu — w telefonie lub wydrukowany.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2 class="display">Nie przegap kolejnej imprezy w Garwolinie</h2>
+  <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet online →</a>
+</div>
+
+<section id="Sociale">
+  <div class="section-head">
+    <span class="eyebrow">nasze</span>
+    <h2 class="display">Social media</h2>
+  </div>
+
+<div style="display: flex; justify-content: center; gap: 100px;">
+  <span><a class="cta-primary" href="https://www.instagram.com/goevent_garwolin/" target="_blank" rel="noopener">INSTAGRAM</a></span>
+  <span><a class="cta-primary" href="https://www.tiktok.com/@goevent.garwolin?_r=1&_d=secCgYIASAHKAESPgo8YDGSxoGIcFGzyY%2B%2FGki%2F9TbXK7PhDTlHSoEKL93mcT%2FVJPCm%2B1N1BRDdm9aKA66yCf2M5LJ3aEzRM1QEGgA%3D&_svg=2&checksum=134b023f6ca4c9369daa2b6cb29ba9e75416432559701207b1cd8db2f5f7b9c9&item_author_type=2&panel_source_v2=share_panel&reflow_sign_scene=7&rgssign=8.1.s9jRyBqjwBKBY4JMCs94og&sec_uid=MS4wLjABAAAASM-XrAU2pfpjdhOHVmHPyl6osczewzi0HHhxr6BSR62lOc5SLpXIq9TrIWp5lDO5&sec_user_id=MS4wLjABAAAAPHyaVKxURZU3x_WNCUncWvkToMqvbAWmF-lS6QqSTFO0m0HaOMXqoTN2LE7JJOdD&share_app_id=1233&share_author_id=7515793322430989334&share_enter_from=others_homepage&share_link_id=028C6AF8-FC64-4D13-850C-A099E4A7E3B6&share_region=PL&share_scene=1&sharer_language=pl&social_share_type=5&source=h5_m&timestamp=1783618336&tt_from=copy&u_code=dcbc5lc6khae1c&ug_btm=b6880%2Cb5836&user_id=6826436916003668998&utm_campaign=client_share&utm_medium=ios&utm_source=copy" target="_blank" rel="noopener">TIKTOK</a></span>
+   <span><a class="cta-primary" href="https://www.facebook.com/profile.php?id=61577033673268&locale=pl_PL" target="_blank" rel="noopener">FACEBOOK</a></span>
+</div>
+</section>
+
+<footer id="kontakt">
+  <div class="footer-brand">
+    GO EVENT GARWOLIN
+  </div>
+  <div class="footer-links">
+    <a href="#event">Najbliższy event</a>
+    <a href="#jak-kupic">Jak kupić bilet</a>
+  </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+           <div class="footer-links"></div> Designed by <a title="Instagram" rel="sponsored" href="https://www.instagram.com/p.paziewskii/" target="_blank">p.paziewskii</a></p>
+        <div class="footer-fine">© 2026 GO EVENT GARWOLIN.</div>
+        <div class="footer-fine">GO EVENT sp. z o.o.</div>
+        <div class="footer-fine">KRS 8262232224</div>
+        <div class="footer-fine">REGON 544638218</div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // USTAW DATĘ WYDARZENIA TUTAJ (rok, miesiąc-1, dzień, godzina, minuta)
+  const eventDate = new Date(2026, 6, 24, 19, 0, 0).getTime();
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function updateCountdown(){
+    const now = new Date().getTime();
+    const diff = eventDate - now;
+
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minEl = document.getElementById('cd-min');
+    const secEl = document.getElementById('cd-sec');
+
+    if(diff <= 0){
+      daysEl.textContent = '00';
+      hoursEl.textContent = '00';
+      minEl.textContent = '00';
+      secEl.textContent = '00';
+      document.querySelector('.board-label').textContent = 'Impreza już trwa!';
+      return;
+    }
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((diff % (1000*60)) / 1000);
+
+    daysEl.textContent = pad(days);
+    hoursEl.textContent = pad(hours);
+    minEl.textContent = pad(minutes);
+    secEl.textContent = pad(seconds);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
