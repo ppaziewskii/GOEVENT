@@ -23,6 +23,10 @@
 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
+  html, body{
+    overflow-x:hidden;
+    max-width:100%;
+  }
   body{
     margin:0;
     background:var(--ink-violet);
@@ -108,8 +112,46 @@
     text-decoration:none;
     white-space:nowrap;
   }
+  .nav-toggle{
+    display:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:8px;
+    margin-left:8px;
+  }
+  .nav-toggle span{
+    display:block;
+    width:24px;
+    height:2px;
+    background:var(--cream);
+    margin:5px 0;
+    transition:transform .2s ease, opacity .2s ease;
+  }
+  .nav-toggle.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle.active span:nth-child(2){opacity:0;}
+  .nav-toggle.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
   @media (max-width:720px){
-    .nav-links{display:none;}
+    .nav-links{
+      display:none;
+      position:fixed;
+      top:0; left:0; right:0;
+      flex-direction:column;
+      gap:0;
+      background:var(--ink-violet);
+      padding:88px 24px 28px;
+      z-index:45;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{
+      width:100%;
+      text-align:center;
+      padding:14px 0;
+      font-size:16px;
+      border-bottom:1px solid var(--line);
+    }
+    .nav-toggle{display:block;}
   }
 
   .logo-ring{
@@ -485,14 +527,17 @@
     <img src="goev.jpg" alt="Logo GO EVENT GARWOLIN">
     GO EVENT GARWOLIN
   </div>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="#event">Najbliższy event</a>
     <a href="#o-nas">Gwiazda wieczoru</a>
     <a href="#SKYREX">Dj SKYREX</a>
     <a href="#jak-kupic">Jak kupić bilet</a>
     <a href="#kontakt">SOCIAL MEDIA</a>
   </div>
-  <a class="nav-cta" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet</a>
+  <a class="nav-cta" href="https://goevent.superboss.pl">Kup bilet</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Otwórz menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <header class="hero">
@@ -516,7 +561,7 @@
     </div>
   </div>
 
-  <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">
+  <a class="cta-primary" href="https://goevent.superboss.pl" target="_blank" rel="noopener">
     Kup bilet online →
   </a>
 </header>
@@ -560,10 +605,10 @@
         20 zł · pula ograniczona
         </div>
       </div>
-      <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet online →</a>
+      <a class="cta-primary" href="https://goevent.superboss.pl" target="_blank" rel="noopener">Kup bilet online →</a>
     </div>
   </div>
-
+</section>
 
 <section id="o-nas">
   <div class="about-grid">
@@ -581,7 +626,7 @@
     
     <div class="about-visual">
 
-  <img src="SEQUENTO2.png" alt="Sequento" style="width: 200%; max-width: 800px; height: auto;">
+  <img src="SEQUENTO2.png" alt="Sequento">
 
     </div>
     <span><a class="cta-primary" href="https://www.instagram.com/goevent_garwolin/" target="_blank" rel="noopener">INSTAGRAM</a></span>
@@ -598,15 +643,10 @@
       <p></p>
       <div class="stat-row">
         <div class="stat"><b>1300 +</b><span>obserwujących</span></div>
-        
-        
       </div>
     </div>
-    
-    <div class="about-visual">
-
-  <img src="SKRX1.png" alt="SKYRX" style="width: 200%; max-width: 800px; height: auto;">
-
+     <div class="about-visual">
+     <img src="SKRX1.png" alt="SKYRX">
     </div>
   </div>
   <span><a class="cta-primary" href="https://www.instagram.com/dj.skyrex/" target="_blank" rel="noopener">INSTAGRAM</a></span>
@@ -638,7 +678,7 @@
 
 <div class="cta-band">
   <h2 class="display">Nie przegap kolejnej imprezy w Garwolinie</h2>
-  <a class="cta-primary" href="https://www.kupbilet.info/pl/?gad_source=1&gad_campaignid=23831595259&gbraid=0AAAAA-66UluYiUanbZ2LENVgFzJZGHuRy&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgOD3sgwMMBffo5PjIy_JjebyucALo5CT6-mwx3lGoOMCjCIFEctXCkaAnimEALw_wcB" target="_blank" rel="noopener">Kup bilet online →</a>
+  <a class="cta-primary" href="https://goevent.superboss.pl" target="_blank" rel="noopener">Kup bilet online →</a>
 </div>
 
 <section id="Sociale">
@@ -647,7 +687,7 @@
     <h2 class="display">Social media</h2>
   </div>
 
-<div style="display: flex; justify-content: center; gap: 100px;">
+<div style="display: flex; justify-content: center; gap: 50px;">
   <span><a class="cta-primary" href="https://www.instagram.com/goevent_garwolin/" target="_blank" rel="noopener">INSTAGRAM</a></span>
   <span><a class="cta-primary" href="https://www.tiktok.com/@goevent.garwolin?_r=1&_d=secCgYIASAHKAESPgo8YDGSxoGIcFGzyY%2B%2FGki%2F9TbXK7PhDTlHSoEKL93mcT%2FVJPCm%2B1N1BRDdm9aKA66yCf2M5LJ3aEzRM1QEGgA%3D&_svg=2&checksum=134b023f6ca4c9369daa2b6cb29ba9e75416432559701207b1cd8db2f5f7b9c9&item_author_type=2&panel_source_v2=share_panel&reflow_sign_scene=7&rgssign=8.1.s9jRyBqjwBKBY4JMCs94og&sec_uid=MS4wLjABAAAASM-XrAU2pfpjdhOHVmHPyl6osczewzi0HHhxr6BSR62lOc5SLpXIq9TrIWp5lDO5&sec_user_id=MS4wLjABAAAAPHyaVKxURZU3x_WNCUncWvkToMqvbAWmF-lS6QqSTFO0m0HaOMXqoTN2LE7JJOdD&share_app_id=1233&share_author_id=7515793322430989334&share_enter_from=others_homepage&share_link_id=028C6AF8-FC64-4D13-850C-A099E4A7E3B6&share_region=PL&share_scene=1&sharer_language=pl&social_share_type=5&source=h5_m&timestamp=1783618336&tt_from=copy&u_code=dcbc5lc6khae1c&ug_btm=b6880%2Cb5836&user_id=6826436916003668998&utm_campaign=client_share&utm_medium=ios&utm_source=copy" target="_blank" rel="noopener">TIKTOK</a></span>
    <span><a class="cta-primary" href="https://www.facebook.com/profile.php?id=61577033673268&locale=pl_PL" target="_blank" rel="noopener">FACEBOOK</a></span>
@@ -711,6 +751,22 @@
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // Mobilne menu (hamburger)
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('active', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
 
 </body>
